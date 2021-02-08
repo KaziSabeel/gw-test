@@ -4,10 +4,12 @@
   <head>
     <script src="https://s3-us-west-2.amazonaws.com/dc-sampleaddon-ui/gwsdk-1.0.9.js"></script>
   </head>
+  
   <body>
     <h3>This is a Sample App Test</h3>
     <button onclick="createSr()">Create a Service Request</button>
   </body>
+  
   <script>
     function createSr() {
       var gwClient = GW.createClient('chro', "chrocc");
