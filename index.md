@@ -1,37 +1,30 @@
-## Welcome to GitHub Pages
-
-You can use the [editor on GitHub](https://github.com/KaziSabeel/gw-test/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/KaziSabeel/gw-test/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+<!DOCTYPE html>
+<html>
+  <!-- This example HTML file is loaded by the Sample Addon to show simple SR creation. -->
+  <head>
+    <script src="https://s3-us-west-2.amazonaws.com/dc-sampleaddon-ui/gwsdk-1.0.9.js"></script>
+  </head>
+  <body>
+    <h3>This is a Sample App Test</h3>
+    <button onclick="createSr()">Create a Service Request</button>
+  </body>
+  <script>
+    function createSr() {
+      var gwClient = GW.createClient('chro', "chrocc");
+      gwClient.getClient().then(function(client) {
+        return Promise.all([client, client.getContext()]);
+      }).then(function(values) {
+        //This is where you would use the Context to prefill and eventually create a service on your side
+        //We will just create a dummy SR
+        var serviceRequest = {
+          "referenceNumber": Math.floor(Math.random() * 10000),
+          "serviceableId": values[1].candidates[0].id,
+          "referenceId1": Math.floor(Math.random() * 10000)
+        }
+        return Promise.all([values[0], values[0].invokeWithoutRefresh("createService", serviceRequest)])
+      }).then(function(values) {
+        values[0].completed(values[1].referenceNumber);
+      });
+    }
+  </script>
+</html>
